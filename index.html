@@ -213,7 +213,7 @@
 
     function makeOdUrl(relPath) {
       const fullId = OD_BASE_ID + "/" + relPath;
-      return "https://moebh-my.sharepoint.com/my?id=" + encodeURIComponent(fullId) + "&viewid=" + encodeURIComponent(OD_VIEW_ID);
+      return "https://moebh-my.sharepoint.com/my?id=" + encodeURIComponent(fullId);
     }
 
     document.getElementById("passwordInput").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
