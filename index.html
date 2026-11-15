@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>رصانة البلاد 2026-2027 | بوابة الفريق أونلاين</title>
+  <style>
+    :root {
+      --bg: #f4f6fa;
+      --surface: #ffffff;
+      --primary: #0f3d5e;
+      --primary-2: #165985;
+      --accent: #c8963e;
+      --green: #15803d;
+      --green-bg: #dcfce7;
+      --red: #b91c1c;
+      --red-bg: #fee2e2;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 18px rgba(15, 61, 94, 0.08);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Segoe UI", Tahoma, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+
+    #loginScreen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+      background: linear-gradient(135deg, #0b2c44 0%, #165985 60%, #1e6f9f 100%);
+    }
+    .login-card {
+      background: var(--surface); width: 100%; max-width: 430px; border-radius: 20px; padding: 36px 30px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25); text-align: center; border-top: 6px solid var(--accent);
+    }
+    .login-badge { display: inline-block; background: #eef5fb; color: var(--primary); padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+    .login-card h1 { font-size: 26px; color: var(--primary); margin-bottom: 6px; }
+    .login-card .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+    .input-wrap { position: relative; margin-bottom: 14px; }
+    .input-wrap input { width: 100%; padding: 13px 16px; padding-left: 48px; border: 2px solid var(--border); border-radius: 12px; font-size: 16px; outline: none; text-align: center; letter-spacing: 2px; }
+    .toggle-pass { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 18px; }
+    .btn-login { width: 100%; padding: 13px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; }
+    .login-error { color: var(--red); background: var(--red-bg); padding: 8px 12px; border-radius: 8px; font-size: 13px; margin-top: 12px; display: none; }
+    .credit-footer { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); font-weight: 600; }
+
+    #appScreen { display: none; }
+    header.topbar { background: linear-gradient(135deg, #0b2c44 0%, #144d75 100%); color: #fff; padding: 16px 24px; box-shadow: 0 4px 14px rgba(0,0,0,0.12); position: sticky; top: 0; z-index: 50; }
+    .topbar-inner { max-width: 1360px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+    .brand h1 { font-size: 21px; font-weight: 800; }
+    .brand p { font-size: 12.5px; color: #cbd5e1; margin-top: 2px; }
+    .top-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .btn { border: none; border-radius: 10px; padding: 8px 13px; font-size: 12.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; text-decoration: none; }
+    .btn-light { background: rgba(255,255,255,0.15); color: #fff; }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-danger { background: rgba(239,68,68,0.22); color: #fecaca; }
+
+    .container { max-width: 1360px; margin: 22px auto; padding: 0 20px 50px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .stat-card { background: var(--surface); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); border-right: 5px solid var(--primary); display: flex; flex-direction: column; gap: 4px; }
+    .stat-card.green { border-right-color: var(--green); }
+    .stat-card.red { border-right-color: var(--red); }
+    .stat-card.accent { border-right-color: var(--accent); }
+    .stat-label { font-size: 13px; color: var(--muted); font-weight: 600; }
+    .stat-value { font-size: 30px; font-weight: 800; }
+    .stat-sub { font-size: 12px; color: var(--muted); }
+
+    .overall-progress-card { background: var(--surface); border-radius: var(--radius); padding: 16px 20px; box-shadow: var(--shadow); margin-bottom: 18px; }
+    .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 700; font-size: 14px; }
+    .progress-bar-bg { height: 12px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #16a34a, #22c55e); border-radius: 999px; transition: width 0.4s ease; }
+
+    .domains-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .domain-card { background: var(--surface); border: 2px solid transparent; border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); cursor: pointer; }
+    .domain-card.active { border-color: var(--primary-2); background: #f0f7ff; }
+    .domain-title { font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+    .domain-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+
+    .controls-bar { background: var(--surface); border-radius: var(--radius); padding: 14px 18px; box-shadow: var(--shadow); margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+    .filter-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tab-btn { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: #f8fafc; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .search-box { flex: 1; min-width: 240px; max-width: 420px; }
+    .search-box input { width: 100%; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; outline: none; font-family: inherit; }
+
+    .items-list { display: flex; flex-direction: column; gap: 10px; }
+    .item-card { background: var(--surface); border-radius: var(--radius); padding: 15px 18px; box-shadow: 0 2px 10px rgba(15, 61, 94, 0.05); border: 1px solid var(--border); }
+    .item-top { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .item-info { flex: 1; min-width: 260px; }
+    .badges { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .code-badge { background: var(--primary); color: #fff; font-weight: 800; font-size: 13px; padding: 3px 10px; border-radius: 8px; direction: ltr; }
+    .domain-badge { background: #eef2f6; color: #334155; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 8px; }
+    .status-badge { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+    .status-badge.filled { background: var(--green-bg); color: var(--green); }
+    .status-badge.empty { background: var(--red-bg); color: var(--red); }
+    .item-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .item-indicator { font-size: 12.5px; color: var(--muted); }
+    .folder-path { font-size: 12px; color: #475569; margin-top: 4px; }
+
+    .item-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .btn-open { background: #0f3d5e; color: #fff; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; text-decoration: none; display: inline-block; }
+    .btn-details { background: #f8fafc; color: #475569; padding: 8px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 600; border: 1px solid var(--border); cursor: pointer; font-family: inherit; }
+
+    .item-details { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); display: none; font-size: 13px; }
+    .item-details.show { display: block; }
+    .details-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+    .sub-box { background: #f8fafc; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); }
+    .sub-box h4 { font-size: 13px; color: var(--primary); margin-bottom: 8px; }
+    .sub-box ol { padding-right: 18px; color: #334155; }
+    .sub-box li { margin-bottom: 4px; }
+    .file-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #e2e8f0; font-size: 12.5px; }
+    .file-row:last-child { border-bottom: none; }
+
+    footer.app-footer { text-align: center; padding: 18px; color: var(--muted); font-size: 13px; font-weight: 600; border-top: 1px solid var(--border); background: #fff; }
+    @media print {
+      header.topbar, .controls-bar, .item-actions, .btn, #loginScreen { display: none !important; }
+      #appScreen { display: block !important; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loginScreen">
+    <div class="login-card">
+      <div class="login-badge">بوابة الفريق أونلاين • OneDrive المدرسي</div>
+      <h1>رصانة البلاد 2026-2027</h1>
+      <p class="subtitle">أدخل كلمة المرور لاستعراض البنود والمجلدات والإحصائيات</p>
+      <div class="input-wrap">
+        <input type="password" id="passwordInput" placeholder="كلمة المرور" autocomplete="off" />
+        <button type="button" class="toggle-pass" onclick="togglePass()">👁️</button>
+      </div>
+      <button class="btn-login" onclick="doLogin()">دخول إلى المنصة</button>
+      <div class="login-error" id="loginError">كلمة المرور غير صحيحة.</div>
+      <div class="credit-footer">تصميم صبري محمد حمد</div>
+    </div>
+  </div>
+
+  <div id="appScreen">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <h1>🏫 رصانة البلاد 2026-2027 (البوابة المشتركة)</h1>
+          <p>تصميم صبري محمد حمد • آخر تحديث للإحصائيات: <span id="scannedAt">—</span></p>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-light" onclick="loadData()">🔄 تحديث</button>
+          <a class="btn btn-accent" id="odRootBtn" href="#" target="_blank" style="display:none;">☁️ فتح OneDrive المدرسي</a>
+          <button class="btn btn-light" onclick="exportCSV()">📊 تصدير Excel</button>
+          <button class="btn btn-light" onclick="window.print()">🖨️ طباعة</button>
+          <button class="btn btn-danger" onclick="logout()">🔒 خروج</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-label">إجمالي البنود</span><span class="stat-value" id="statTotal">0</span><span class="stat-sub">وفق الخطة التشغيلية</span></div>
+        <div class="stat-card green"><span class="stat-label">المجلدات المعبأة</span><span class="stat-value" id="statFilled">0</span><span class="stat-sub" id="statFilledPct">0%</span></div>
+        <div class="stat-card red"><span class="stat-label">المجلدات الفارغة</span><span class="stat-value" id="statEmpty">0</span><span class="stat-sub" id="statEmptyPct">0%</span></div>
+        <div class="stat-card accent"><span class="stat-label">إجمالي الملفات</span><span class="stat-value" id="statFiles">0</span><span class="stat-sub">في مجلدات OneDrive</span></div>
+      </div>
+
+      <div class="overall-progress-card">
+        <div class="progress-header"><span>نسبة التوثيق الإجمالية</span><span id="overallPctLabel">0%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="overallBar" style="width:0%;"></div></div>
+      </div>
+
+      <div class="domains-grid" id="domainsGrid"></div>
+
+      <div class="controls-bar">
+        <div class="filter-tabs">
+          <button class="tab-btn active" onclick="setFilter('all', this)">الكل (<span id="cntAll">0</span>)</button>
+          <button class="tab-btn" onclick="setFilter('filled', this)">✅ المعبأة (<span id="cntFilled">0</span>)</button>
+          <button class="tab-btn" onclick="setFilter('empty', this)">⚠️ الفارغة (<span id="cntEmpty">0</span>)</button>
+        </div>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="ابحث برقم البند (مثل 1.1.1) أو باسم البند..." oninput="renderItems()" />
+        </div>
+      </div>
+
+      <div class="items-list" id="itemsList"></div>
+    </div>
+
+    <footer class="app-footer">منصة رصانة البلاد 2026-2027 • تصميم صبري محمد حمد</footer>
+  </div>
+
+  <script>
+    const PASS_HASH = "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f"; // sha256("12345678")
+    let APP_DATA = null;
+    let CURRENT_FILTER = "all";
+    let CURRENT_DOMAIN = "all";
+
+    document.getElementById("passwordInput").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
+    function togglePass() { const i = document.getElementById("passwordInput"); i.type = i.type === "password" ? "text" : "password"; }
+
+    async function sha256(text) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    async function doLogin() {
+      const val = document.getElementById("passwordInput").value;
+      const err = document.getElementById("loginError");
+      err.style.display = "none";
+      const h = await sha256(val);
+      if (h === PASS_HASH || val === "12345678") {
+        sessionStorage.setItem("rasana_online_auth", "1");
+        showApp();
+      } else {
+        err.style.display = "block";
+      }
+    }
+
+    function logout() {
+      sessionStorage.removeItem("rasana_online_auth");
+      document.getElementById("appScreen").style.display = "none";
+      document.getElementById("loginScreen").style.display = "flex";
+      document.getElementById("passwordInput").value = "";
+    }
+
+    async function showApp() {
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("appScreen").style.display = "block";
+      await loadData();
+    }
+
+    async function loadData() {
+      const res = await fetch("./status.json?t=" + Date.now());
+      APP_DATA = await res.json();
+      renderSummary();
+      renderDomains();
+      renderItems();
+    }
+
+    function renderSummary() {
+      const s = APP_DATA.summary;
+      document.getElementById("statTotal").textContent = s.total;
+      document.getElementById("statFilled").textContent = s.filled;
+      document.getElementById("statEmpty").textContent = s.empty;
+      document.getElementById("statFiles").textContent = s.total_files;
+      document.getElementById("scannedAt").textContent = s.scanned_at;
+      document.getElementById("statFilledPct").textContent = s.percent + "% من الإجمالي";
+      document.getElementById("statEmptyPct").textContent = (100 - s.percent).toFixed(1) + "% متبقية";
+      document.getElementById("overallPctLabel").textContent = s.percent + "%";
+      document.getElementById("overallBar").style.width = s.percent + "%";
+      document.getElementById("cntAll").textContent = s.total;
+      document.getElementById("cntFilled").textContent = s.filled;
+      document.getElementById("cntEmpty").textContent = s.empty;
+      const odBtn = document.getElementById("odRootBtn");
+      if (s.onedrive_root_url) { odBtn.href = s.onedrive_root_url; odBtn.style.display = "inline-flex"; }
+      else { odBtn.style.display = "none"; }
+    }
+
+    function renderDomains() {
+      const grid = document.getElementById("domainsGrid");
+      grid.innerHTML = "";
+      APP_DATA.domains.forEach(d => {
+        const card = document.createElement("div");
+        card.className = "domain-card" + (CURRENT_DOMAIN === d.domain_id ? " active" : "");
+        card.onclick = () => { CURRENT_DOMAIN = CURRENT_DOMAIN === d.domain_id ? "all" : d.domain_id; renderDomains(); renderItems(); };
+        card.innerHTML = `
+          <div class="domain-title">${esc(d.domain)}</div>
+          <div class="domain-meta"><span>معبأ: <strong>${d.filled}</strong> / ${d.total}</span><span>فارغ: <strong>${d.empty}</strong></span><span><strong>${d.percent}%</strong></span></div>
+          <div class="progress-bar-bg" style="height:8px;"><div class="progress-bar-fill" style="width:${d.percent}%;"></div></div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function setFilter(f, btn) {
+      CURRENT_FILTER = f;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderItems();
+    }
+
+    function renderItems() {
+      const container = document.getElementById("itemsList");
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+      const filtered = APP_DATA.items.filter(it => {
+        if (CURRENT_DOMAIN !== "all" && it.domain_id !== CURRENT_DOMAIN) return false;
+        if (CURRENT_FILTER === "filled" && it.status !== "filled") return false;
+        if (CURRENT_FILTER === "empty" && it.status !== "empty") return false;
+        if (q) {
+          const hay = (it.code + " " + it.title + " " + it.indicator + " " + it.domain + " " + it.sub_procedures.join(" ")).toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+      container.innerHTML = "";
+      filtered.forEach(it => {
+        const card = document.createElement("div");
+        card.className = "item-card";
+        const statusBadge = it.status === "filled"
+          ? `<span class="status-badge filled">✅ معبأ (${it.file_count} ملف)</span>`
+          : `<span class="status-badge empty">⚠️ فارغ</span>`;
+        const odBtn = it.onedrive_url
+          ? `<a class="btn-open" href="${esc(it.onedrive_url)}" target="_blank">☁️ فتح في OneDrive</a>`
+          : "";
+        const subsHtml = it.sub_procedures.length ? `<ol>${it.sub_procedures.map(s => `<li>${esc(s)}</li>`).join("")}</ol>` : `<p>—</p>`;
+        const filesHtml = it.files.length ? it.files.map(f => `<div class="file-row"><span>📄 ${esc(f.name)}</span><span style="direction:ltr;color:var(--muted);">${esc(f.size_human)}</span></div>`).join("") : `<p style="color:var(--muted);">المجلد فارغ.</p>`;
+        card.innerHTML = `
+          <div class="item-top">
+            <div class="item-info">
+              <div class="badges"><span class="code-badge">${esc(it.code)}</span><span class="domain-badge">${esc(it.domain)}</span>${statusBadge}</div>
+              <div class="item-title">${esc(it.title)}</div>
+              ${it.indicator ? `<div class="item-indicator">${esc(it.indicator)}</div>` : ""}
+              <div class="folder-path">📁 المسار في OneDrive: ${esc(it.rel_folder)}</div>
+            </div>
+            <div class="item-actions">
+              ${odBtn}
+              <button class="btn-details" onclick="document.getElementById('d-${it.id}').classList.toggle('show')">التفاصيل (${it.sub_procedures.length})</button>
+            </div>
+          </div>
+          <div class="item-details" id="d-${it.id}">
+            <div class="details-cols">
+              <div class="sub-box"><h4>الإجراءات الفرعية</h4>${subsHtml}</div>
+              <div class="sub-box"><h4>الملفات المرفوعة (${it.file_count})</h4>${filesHtml}</div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function exportCSV() {
+      const rows = [["م", "الترقيم", "المجال", "اسم البند", "الحالة", "عدد الملفات", "أسماء الملفات"]];
+      APP_DATA.items.forEach(it => {
+        rows.push([
+          it.id, it.code, it.domain, it.title,
+          it.status === "filled" ? "معبأ" : "فارغ",
+          it.file_count,
+          it.files.map(f => f.name).join(" | ")
+        ]);
+      });
+      const csv = "\ufeff" + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "rasana_albilad_2026_2027_report.csv";
+      a.click();
+    }
+
+    function esc(s) { return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    if (sessionStorage.getItem("rasana_online_auth") === "1") showApp();
+  </script>
+</body>
+</html>
